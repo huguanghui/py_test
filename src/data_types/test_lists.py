@@ -115,3 +115,101 @@ def test_del_statement():
     del numbers
     with pytest.raises(Exception):
         assert numbers == []
+
+
+def test_list_comprehensions():
+    squares = []
+    for number in range(10):
+        squares.append(number**2)
+
+    assert squares == [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+
+    squares = list(map(lambda x: x**2, range(10)))
+    assert squares == [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+
+    squares = [x**2 for x in range(10)]
+    assert squares == [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+
+    combinations = [(x, y) for x in [1, 2, 3] for y in [3, 1, 4] if x != y]
+    assert combinations == [(1, 3), (1, 4), (2, 3), (2, 1), (2, 4), (3, 1),
+                            (3, 4)]
+
+    combinations = []
+    for first_number in [1, 2, 3]:
+        for second_number in [3, 1, 4]:
+            if first_number != second_number:
+                combinations.append((first_number, second_number))
+
+    assert combinations == [(1, 3), (1, 4), (2, 3), (2, 1), (2, 4), (3, 1),
+                            (3, 4)]
+
+    vector = [-4, -2, 0, 2, 4]
+
+    doubled_vector = [x * 2 for x in vector]
+    assert doubled_vector == [-8, -4, 0, 4, 8]
+
+    positive_vector = [x for x in vector if x >= 0]
+    assert positive_vector == [0, 2, 4]
+
+    abs_vector = [abs(x) for x in vector]
+    assert abs_vector == [4, 2, 0, 2, 4]
+
+    fresh_fruit = ['banana', 'loganberry', 'passion fruit ']
+    clean_fresh_fruit = [weapon.strip() for weapon in fresh_fruit]
+    assert clean_fresh_fruit == ['banana', 'loganberry', 'passion fruit']
+
+    square_tuples = [(x, x**2) for x in range(6)]
+    assert square_tuples == [(0, 0), (1, 1), (2, 4), (3, 9), (4, 16), (5, 25)]
+
+    vector = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+    flatten_vector = [num for elem in vector for num in elem]
+    assert flatten_vector == [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+
+def test_nested_list_comprehensions():
+    """Nested List Comprehensions
+
+    """
+    matrix = [
+        [1, 2, 3, 4],
+        [5, 6, 7, 8],
+        [9, 10, 11, 12],
+    ]
+
+    transposed_matrix = [[row[i] for row in matrix] for i in range(4)]
+    assert transposed_matrix == [
+        [1, 5, 9],
+        [2, 6, 10],
+        [3, 7, 11],
+        [4, 8, 12],
+    ]
+
+    transposed = []
+    for i in range(4):
+        transposed.append([row[i] for row in matrix])
+    assert transposed == [
+        [1, 5, 9],
+        [2, 6, 10],
+        [3, 7, 11],
+        [4, 8, 12],
+    ]
+
+    transposed = []
+    for i in range(4):
+        transposed_row = []
+        for row in matrix:
+            transposed_row.append(row[i])
+        transposed.append(transposed_row)
+    assert transposed == [
+        [1, 5, 9],
+        [2, 6, 10],
+        [3, 7, 11],
+        [4, 8, 12],
+    ]
+
+    assert list(zip(*matrix)) == [
+        (1, 5, 9),
+        (2, 6, 10),
+        (3, 7, 11),
+        (4, 8, 12),
+    ]
